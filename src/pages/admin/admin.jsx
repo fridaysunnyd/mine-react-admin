@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
+import {Row, Col} from 'antd'
 
 import MemoryUtils from '../../utils/MemoryUtils'
+import LeftNav from '../../components/left-nav/left-nav'
+import Header from '../../components/header/header'
+import Footer from '../../components/footer/footer'
 /*
 后台管理主界面的路由组件
  */
@@ -15,9 +19,18 @@ export default class Admin extends Component {
       return <Redirect to='/login'/>
     }
     return (
-      <div>
-        Admin
-      </div>
+      <Row className='container'>
+        <Col span={4}>
+          <LeftNav></LeftNav>
+        </Col>
+        <Col span={20} className='main'>
+          <Header/>
+          <div className='content'>
+
+          </div>
+          <Footer/>
+        </Col>
+      </Row>
     )
   }
 }
