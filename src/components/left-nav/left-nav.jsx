@@ -9,7 +9,7 @@ import menuList from '../../config/menuConfig'
 const SubMenu = Menu.SubMenu
 const Item = Menu.Item
 
-export default class LeftNav extends React.Component {
+class LeftNav extends React.Component {
 
   //数组变标签数组
   getNodes = (list) =>{
@@ -42,14 +42,14 @@ export default class LeftNav extends React.Component {
   }
 
   render() {
-
+    const path = this.props.location.pathname
     return (
       <div className="left-nav">
         <div className="logo">
           <img src={logo} alt="logo"/>
           <h1>硅谷后台</h1>
         </div>
-        <Menu mode="inline" theme='dark'>
+        <Menu mode="inline" theme='dark' defaultSelectedKeys={[path]}>
           {
             this.menuNodes
           }
@@ -58,3 +58,4 @@ export default class LeftNav extends React.Component {
     )
   }
 }
+export default withRouter(LeftNav)
