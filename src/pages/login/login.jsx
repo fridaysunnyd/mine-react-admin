@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 
 import {reqLogin} from '../../api'
-
+import storageUtils from '../../utils/storageUtils'
+import MemoryUtils from '../../utils/MemoryUtils'
 import {
   Form,
   Icon,
@@ -14,20 +16,25 @@ import './index.less'
 登陆的路由组件
  */
 export default class Login extends Component {
-  // state = {
-  //   errorMsg:''
-  // }
-  // login = (result) => {
-  //   if(result.status === 0){
-  //     //保存
-  //
-  //     //跳转
-  //     this.props.history.replace('/')
-  //   }else {
-  //
-  //   }
-  // }
+  state = {
+    errorMsg:''
+  }
+  login = (result) => {
+    if(result.status === 0){
+      //保存
+      const user = result.data
+      storageUtils.saveUser(user)  // local中
+      MemoryUtils.user = user // 内存中
+      //跳转
+      this.props.history.replace('/')
+    }else {
+      this.setState({
+        errorMsg: result.msg
+      })
+    }
+  }
   render() {
+    const {errorMsg} = this.state
     return (
       <div className="login">
         <div className="login-header">
@@ -36,8 +43,13 @@ export default class Login extends Component {
         </div>
         <div className="login-content">
           <div className="login-box">
+            <div className="error-msg-wrap">
+              <div className={errorMsg ? "show" : ""}>
+                {errorMsg}
+              </div>
+            </div>
             <div className="title">用户登陆</div>
-            <LoginForm />
+            <LoginForm login={this.login}/>
           </div>
         </div>
       </div>
@@ -51,6 +63,9 @@ export default class Login extends Component {
  resetFields(): 重置所有输入框
  validateFields((error, values) => {}): 对所有表单项进行验证*/
 class LoginForm extends React.Component{
+  static propTypes = {
+    login: PropTypes.func.isRequired
+  }
 
   checkPassword = (rule,value,callback) => { // 如果不满足要求, 通过调用callback()来指定对应的message
     if(!value) {
@@ -70,7 +85,7 @@ class LoginForm extends React.Component{
         console.log('收集表单数据', values)
         const {username,password} = values
         const result = await reqLogin(username, password)
-        console.log(result)
+        this.props.login(result)
       } else {
         this.props.form.resetFields() // 重置所有输入框
       }
