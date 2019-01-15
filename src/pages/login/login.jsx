@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 
+import {reqLogin} from '../../api'
+
 import {
   Form,
   Icon,
@@ -12,6 +14,19 @@ import './index.less'
 登陆的路由组件
  */
 export default class Login extends Component {
+  // state = {
+  //   errorMsg:''
+  // }
+  // login = (result) => {
+  //   if(result.status === 0){
+  //     //保存
+  //
+  //     //跳转
+  //     this.props.history.replace('/')
+  //   }else {
+  //
+  //   }
+  // }
   render() {
     return (
       <div className="login">
@@ -22,7 +37,7 @@ export default class Login extends Component {
         <div className="login-content">
           <div className="login-box">
             <div className="title">用户登陆</div>
-            <LoginForm/>
+            <LoginForm />
           </div>
         </div>
       </div>
@@ -49,10 +64,13 @@ class LoginForm extends React.Component{
 
   clickLogin = () =>{
     // 只有当验证没有错误时才输出输入的数据
-    this.props.form.validateFields((error, values) => {
+    this.props.form.validateFields(async (error, values) => {
       console.log('validateFields', error, values)
       if(!error) {
         console.log('收集表单数据', values)
+        const {username,password} = values
+        const result = await reqLogin(username, password)
+        console.log(result)
       } else {
         this.props.form.resetFields() // 重置所有输入框
       }
