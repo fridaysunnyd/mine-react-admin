@@ -78,20 +78,14 @@ import {reqWeather} from '../../api'
             <a href="javascript:" onClick={this.logout}>退出</a>
           </Col>
         </Row>
-        <Row className="breadcrumb">
-          <Col span={4} className="breadcrumb-title">
-            {menuName}
-          </Col>
-          <Col span={20} className="weather">
-            <span className="date">
-              {sysTime}
+        <Row className='breadcrumb'>
+          <Col span={4} className='breadcrumb-title'>{menuName}</Col>
+          <Col span={20} className='weather'>
+            <span className='date'>{sysTime}</span>
+            <span className='weather-img'>
+              <img src={dayPictureUrl} alt="weather"/>
             </span>
-            <span className="weather-img">
-                <img src={dayPictureUrl} alt=""/>
-            </span>
-            <span className="weather-detail">
-              {temperature}
-            </span>
+            <span className='weather-detail'>{temperature}</span>
           </Col>
         </Row>
       </div>

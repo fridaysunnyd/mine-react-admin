@@ -14,6 +14,7 @@ import Role from '../role/role'
 import Bar from '../charts/bar'
 import Line from '../charts/line'
 import Pie from '../charts/pie'
+import './admin.less'
 /*
 后台管理主界面的路由组件
  */
