@@ -1,19 +1,32 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   Card,
   Table,
   Button,
-  Icon
+  Icon,
+  Modal,
+  Form,
+  Select,
+  Input,
+  message
 } from 'antd'
 
-import {reqCategory,addCategory,updateCategory} from '../../api'
+import {
+  reqCategory,
+  reqAddCategory,
+  reqUpdateCategory} from '../../api'
+
+const Item = Form.Item
+const Option = Select.Option
 
 /*
 管理的分类管理路由组件
  */
 export default class Category extends Component {
   state = {
-    categorys:[]
+    categorys:[],
+    isShowAdd:false,
   }
   getCategorys = async () =>{
     const result = await reqCategory(0)
@@ -23,8 +36,25 @@ export default class Category extends Component {
       })
     }
   }
+  addCategory = async() =>{
+    this.setState({
+      isShowAdd:false
+    })
+    const {parentId,categoryName} = this.form.getFieldsValue()
+    //console.log({parentId,categoryName})
+    const result = await reqAddCategory({parentId,categoryName})
+    if(result.status === 0){
+      message.success('添加成功')
+      this.getCategorys()
+    }
+  }
+  isShowAdd = () =>{
+    this.setState({isShowAdd:true})
+    //console.log(this.form);
+  }
   componentDidMount(){
     this.getCategorys()
+
   }
   componentWillMount(){
     this.columns = [{
@@ -46,12 +76,12 @@ export default class Category extends Component {
     }, ]
   }
   render() {
-    const {categorys} = this.state
+    const {categorys,isShowAdd} = this.state
     return (
       <div>
         <Card>
           <span style={{fontSize: 20}}>一级分类列表</span>
-          <Button type='primary' style={{float: 'right'}}>
+          <Button type='primary' style={{float: 'right'}} onClick={this.isShowAdd}>
             <Icon type='plus'/>
             添加分类
           </Button>
@@ -62,9 +92,59 @@ export default class Category extends Component {
           columns={this.columns}
           dataSource={categorys}
           loading={!categorys || categorys.length===0}
-          pagination={{defaultPageSize: 2}}
+          pagination={{defaultPageSize: 6}}
         />
+        <Modal
+          title="添加分类"
+          visible={isShowAdd}
+          onOk={this.addCategory}
+          onCancel={() => this.setState({isShowAdd: false})}
+        >
+          <AddForm categorys={categorys} setForm={(form) => this.form = form}/>
+        </Modal>
       </div>
     )
   }
 }
+
+class AddForm extends React.Component{
+  static propTypes = {
+    categorys: PropTypes.array.isRequired,
+    setForm: PropTypes.func.isRequired,
+  }
+  componentWillMount () {
+    this.props.setForm(this.props.form)
+  }
+  render (){
+    const {categorys} = this.props
+    const {getFieldDecorator} = this.props.form
+    return (
+      <Form>
+        <Item label='所属分类'>
+          {
+            getFieldDecorator('parentId', {
+              initialValue: '0'
+            })(
+              <Select>
+                <Option key='0' value='0'>一级分类</Option>
+                {
+                  categorys.map(c => <Option key={c._id} value={c._id}>{c.name}</Option>)
+                }
+              </Select>
+            )
+          }
+        </Item>
+        <Item label='分类名称'>
+          {
+            getFieldDecorator('categoryName', {
+              initialValue: ''
+            })(
+              <Input placeholder="请输入分类名称"/>
+            )
+          }
+        </Item>
+      </Form>
+    )
+  }
+}
+AddForm = Form.create()(AddForm)

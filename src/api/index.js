@@ -27,9 +27,9 @@ export function reqWeather(city) {
 //请求分类列表
 export const reqCategory = (parentId) => ajax('/manage/category/list',{parentId})
 //添加分类
-export const addCategory = ({parentId,categoryName}) => ajax('/manage/category/add',{parentId,categoryName},'POST')
+export const reqAddCategory = ({parentId,categoryName}) => ajax('/manage/category/add',{parentId,categoryName},'POST')
 //更新品类名称
-export const updateCategory = ({categoryId,categoryName}) => ajax('/manage/category/update',{categoryId,categoryName},'POST')
+export const reqUpdateCategory = ({categoryId,categoryName}) => ajax('/manage/category/update',{categoryId,categoryName},'POST')
 
 // updateCategory({categoryId:'5c3f04260ec9e53678305b10',categoryName:'ccc'}).then(data =>{console.log(data);})
 
