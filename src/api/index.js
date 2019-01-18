@@ -4,6 +4,14 @@ import jsonp from 'jsonp'
 
 //登录
 export const reqLogin = (username,password) => ajax('/login',{username,password},'POST')
+//请求分类列表
+export const reqCategory = (parentId) => ajax('/manage/category/list',{parentId})
+//添加分类
+export const reqAddCategory = ({parentId,categoryName}) => ajax('/manage/category/add',{parentId,categoryName},'POST')
+//更新品类名称
+export const reqUpdateCategory = ({categoryId,categoryName}) => ajax('/manage/category/update',{categoryId,categoryName},'POST')
+// updateCategory({categoryId:'5c3f04260ec9e53678305b10',categoryName:'ccc'}).then(data =>{console.log(data);})
+
 //请求天气
 export function reqWeather(city) {
   return new Promise((res,rej) => {
@@ -24,12 +32,4 @@ export function reqWeather(city) {
     )
   })
 }
-//请求分类列表
-export const reqCategory = (parentId) => ajax('/manage/category/list',{parentId})
-//添加分类
-export const reqAddCategory = ({parentId,categoryName}) => ajax('/manage/category/add',{parentId,categoryName},'POST')
-//更新品类名称
-export const reqUpdateCategory = ({categoryId,categoryName}) => ajax('/manage/category/update',{categoryId,categoryName},'POST')
-
-// updateCategory({categoryId:'5c3f04260ec9e53678305b10',categoryName:'ccc'}).then(data =>{console.log(data);})
 
