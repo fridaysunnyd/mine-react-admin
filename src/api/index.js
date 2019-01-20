@@ -23,6 +23,8 @@ export const reqSearchProducts = ({pageNum, pageSize,searchName,searchType}) => 
 })
 //删除上传图片
 export const reqRemoveImg = (name) => ajax('/manage/img/delete',{name},'POST')
+// 添加或者更新商品
+export const reqAddUpdateProduct = (product) => ajax('/manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
 
 
 //请求天气

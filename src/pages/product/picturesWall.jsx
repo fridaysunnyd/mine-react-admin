@@ -23,6 +23,10 @@ export default class PicturesWall extends React.Component {
     });
   }
 
+  saveImgs = () => {
+    return this.state.fileList.map(file => file.name)
+  }
+
   handleChange = ({ fileList }) => this.setState({ fileList })
   getImgs = () =>{
     // 如果传入了imgs, 生成一个对应的fileList, 并更新fileList状态

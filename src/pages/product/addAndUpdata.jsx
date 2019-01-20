@@ -1,7 +1,7 @@
 import React from 'react'
 import {Icon, Form, Input, Select, Button, message} from 'antd'
 
-import {reqCategory} from '../../api'
+import {reqCategory,reqAddUpdateProduct} from '../../api'
 import PicturesWall from './picturesWall'
 
 const Item = Form.Item
@@ -13,7 +13,7 @@ class productAddAndUpdata extends React.Component {
     subCategorys:[]
   }
 
-  getCategorys = async (parentId) =>{
+  getCategorys = async(parentId) =>{
     const result = await reqCategory(parentId)
     const categorys = result.data
     if(parentId === '0'){
@@ -41,6 +41,36 @@ class productAddAndUpdata extends React.Component {
     const product = this.props.location.state || {}
     product.categoryId = ''
     this.getCategorys(parentId)
+  }
+  submit = async() =>{
+    const {name, desc, price, category1, category2} = this.props.form.getFieldsValue()
+    let pCategoryId, categoryId
+    if(!category2 || category2==='未选择') { // 当前要添加的商品是一级分类下的
+      pCategoryId = '0'
+      categoryId = category1
+    } else { // 当前要添加的商品是二级分类下的
+      pCategoryId = category1
+      categoryId = category2
+    }
+
+    // 得到所上传图片的文件名的数组
+    const imgs = this.refs.imgs.saveImgs()
+
+    const product = {name, desc, price, pCategoryId, categoryId, imgs}
+
+    // 如果是更新, 指定_id属性
+    const p = this.props.location.state
+    if(p) {
+      product._id = p._id
+    }
+
+    const result = await reqAddUpdateProduct(product)
+    if(result.status===0) {
+      message.success('保存商品成功了')
+      this.props.history.replace('/product/index')
+    } else {
+      message.error('保存商品失败了, 请重新处理')
+    }
   }
 
   componentDidMount(){
@@ -134,8 +164,10 @@ class productAddAndUpdata extends React.Component {
             }
           </Item>
           <Item>
-            <PicturesWall imgs={product.imgs}/>
+            <PicturesWall imgs={product.imgs} ref='imgs'/>
           </Item>
+
+          <Button type='primary' onClick={this.submit}>提交</Button>
         </Form>
       </div>
 
