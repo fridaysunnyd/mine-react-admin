@@ -3,6 +3,7 @@ import {Icon, Form, Input, Select, Button, message} from 'antd'
 
 import {reqCategory,reqAddUpdateProduct} from '../../api'
 import PicturesWall from './picturesWall'
+import RichTextEditor from './richTextEditor'
 
 const Item = Form.Item
 const Option = Select.Option
@@ -55,8 +56,10 @@ class productAddAndUpdata extends React.Component {
 
     // 得到所上传图片的文件名的数组
     const imgs = this.refs.imgs.saveImgs()
+    // 得到富文本编辑器内容
+    const detail = this.refs.detail.getContent()
 
-    const product = {name, desc, price, pCategoryId, categoryId, imgs}
+    const product = {name, desc, price, pCategoryId, categoryId, imgs, detail}
 
     // 如果是更新, 指定_id属性
     const p = this.props.location.state
@@ -165,6 +168,9 @@ class productAddAndUpdata extends React.Component {
           </Item>
           <Item>
             <PicturesWall imgs={product.imgs} ref='imgs'/>
+          </Item>
+          <Item label='商品详情' labelCol={{span: 2}} wrapperCol={{span: 20}}>
+            <RichTextEditor detail={product.detail} ref='detail'/>
           </Item>
 
           <Button type='primary' onClick={this.submit}>提交</Button>

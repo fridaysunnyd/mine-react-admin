@@ -5,6 +5,8 @@ import ProductIndex from './index'
 import productAddAndUpdata from './addAndUpdata'
 import ProductDetail from './detail'
 
+import './product.less'
+
 /*
 管理的商品管理路由组件
  */
