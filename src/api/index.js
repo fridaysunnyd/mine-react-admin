@@ -21,6 +21,8 @@ export const reqSearchProducts = ({pageNum, pageSize,searchName,searchType}) => 
   pageNum,
   pageSize
 })
+//删除上传图片
+export const reqRemoveImg = (name) => ajax('/manage/img/delete',{name},'POST')
 
 
 //请求天气
