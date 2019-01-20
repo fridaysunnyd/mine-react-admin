@@ -61,7 +61,7 @@ export default class productIndex extends React.Component {
           <span>
             <a href="javascript:">详情</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="javascript:">修改</a>
+            <a href="javascript:" onClick={()=>this.props.history.push('/product/saveupdate',product)}>修改</a>
           </span>
         )
       }
@@ -87,7 +87,7 @@ export default class productIndex extends React.Component {
 
           <Button type='primary' onClick={()=>{this.getProducts(1)}}>搜索</Button>
 
-          <Button type='primary' style={{float: 'right'}}>
+          <Button type='primary' style={{float: 'right'}} onClick={()=>this.props.history.push('/product/saveupdate')}>
             <Icon type='plus'/>
             添加商品
           </Button>
