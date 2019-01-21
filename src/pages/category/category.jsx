@@ -64,7 +64,6 @@ export default class Category extends Component {
       isShowUpdate:false
     })
     const categoryName = this.form.getFieldValue('categoryName')
-    console.log(categoryName);
     const categoryId = this.category._id
     const result = await reqUpdateCategory({categoryId,categoryName})
     if(result.status === 0){

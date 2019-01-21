@@ -26,8 +26,6 @@ export default class PicturesWall extends React.Component {
   saveImgs = () => {
     return this.state.fileList.map(file => file.name)
   }
-
-  handleChange = ({ fileList }) => this.setState({ fileList })
   getImgs = () =>{
     // 如果传入了imgs, 生成一个对应的fileList, 并更新fileList状态
     const imgs = this.props.imgs
@@ -42,7 +40,7 @@ export default class PicturesWall extends React.Component {
     }
   }
   handleChange = async ({file, fileList}) => {
-    console.log('handleChange()', file, fileList)
+   // console.log('handleChange()', file, fileList)
     // 如果上传图片完成
     if (file.status === 'done') {
       let result = file.response

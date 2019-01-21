@@ -16,7 +16,7 @@ class LeftNav extends React.Component {
     return list.reduce((pre,item) =>{
       if(item.children){
         const subMenu = (
-          <SubMenu key={item.path} title={<span><Icon type={item.icon} /><span>{item.title}</span></span>}>
+          <SubMenu key={item.key} title={<span><Icon type={item.icon} /><span>{item.title}</span></span>}>
             {
               this.getNodes(item.children)
             }

@@ -35,7 +35,7 @@ export default class Admin extends Component {
         <Col span={20} className='main'>
           <Header/>
           <div className='content'>
-            <switch>
+            <Switch>
               <Route path='/home' component={Home}/>
               <Route path='/category' component={Category}/>
               <Route path='/product' component={Product}/>
@@ -45,7 +45,7 @@ export default class Admin extends Component {
               <Route path='/charts/line' component={Line}/>
               <Route path='/charts/pie' component={Pie}/>
               <Redirect to='/home'/>
-            </switch>
+            </Switch>
           </div>
           <Footer/>
         </Col>
