@@ -1,7 +1,7 @@
 import React from 'react'
-import {Card, Select, Input, Button, Icon, Table} from 'antd'
+import {Card, Select, Input, Button, Icon, Table,message} from 'antd'
 
-import {reqProducts,reqSearchProducts} from '../../api'
+import {reqProducts,reqSearchProducts,reqUpdateProductState} from '../../api'
 
 const Option = Select.Option
 
@@ -10,9 +10,19 @@ export default class productIndex extends React.Component {
     total:0,
     products:[],
     searchType:'productName',
-    searchName:''
+    searchName:'',
+  }
+  updateProductState = async (productId,status) =>{
+    const result = await reqUpdateProductState(productId,status)
+    if(result.status === 0){
+      message.success('更新成功')
+      this.getProducts(this.pageNum || 1)
+    }else {
+      message.error('更新失败')
+    }
   }
   getProducts = async (pageNum) => {
+    this.pageNum = pageNum
     const {searchType,searchName} = this.state
     let result
     if(searchName){
@@ -48,12 +58,27 @@ export default class productIndex extends React.Component {
       {
         title: '状态',
         dataIndex: 'status',
-        render: (status) => (
-          <span>
-            <Button>下架</Button>
-            <span>在售</span>
-          </span>
-        )
+        render: (status,product) => {// 1: 在售, 2: 已下架
+          let btnText
+          let statusText
+          if(status === 1){
+            btnText = '下架'
+            statusText = '在售'
+            status = 2
+          } else if(status === 2){
+            btnText = '上架'
+            statusText = '已下架'
+            status = 1
+          }
+          return (
+            <span>
+              <Button onClick={() =>{this.updateProductState(product._id,status)}}>{btnText}</Button>
+              &nbsp;&nbsp;
+              <span>{statusText}</span>
+            </span>
+          )
+
+        }
       },
       {
         title: '操作',

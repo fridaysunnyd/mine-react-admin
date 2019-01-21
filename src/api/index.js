@@ -25,7 +25,8 @@ export const reqSearchProducts = ({pageNum, pageSize,searchName,searchType}) => 
 export const reqRemoveImg = (name) => ajax('/manage/img/delete',{name},'POST')
 // 添加或者更新商品
 export const reqAddUpdateProduct = (product) => ajax('/manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
-
+//上下架商品
+export const reqUpdateProductState = (productId,status) => ajax('/manage/product/updateStatus',{productId,status},'POST')
 
 //请求天气
 export function reqWeather(city) {
