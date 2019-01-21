@@ -72,7 +72,7 @@ export default class productIndex extends React.Component {
           }
           return (
             <span>
-              <Button onClick={() =>{this.updateProductState(product._id,status)}}>{btnText}</Button>
+              <Button type='primary' onClick={() =>{this.updateProductState(product._id,status)}}>{btnText}</Button>
               &nbsp;&nbsp;
               <span>{statusText}</span>
             </span>
@@ -84,7 +84,7 @@ export default class productIndex extends React.Component {
         title: '操作',
         render: (product) => (
           <span>
-            <a href="javascript:">详情</a>
+            <a href="javascript:" onClick={() => {this.props.history.push('/product/detail',product)}}>详情</a>
             &nbsp;&nbsp;&nbsp;
             <a href="javascript:" onClick={()=>this.props.history.push('/product/saveupdate',product)}>修改</a>
           </span>

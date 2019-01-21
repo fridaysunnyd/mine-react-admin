@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Upload, Icon, Modal,message } from 'antd';
 
 import {reqRemoveImg} from '../../api'
+import {BASE_IMG_PATH} from '../../utils/constant'
 
 export default class PicturesWall extends React.Component {
   static propTypes = {
@@ -34,7 +35,7 @@ export default class PicturesWall extends React.Component {
         uid: -index,
         name: img,
         status: 'done', // loading: 上传中, done: 上传完成, remove: 删除
-        url: 'http://localhost:5000/upload/' + img,
+        url: BASE_IMG_PATH + img,
       }))
       this.state.fileList = fileList
     }

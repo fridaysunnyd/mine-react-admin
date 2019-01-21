@@ -4,6 +4,9 @@ import jsonp from 'jsonp'
 
 //登录
 export const reqLogin = (username,password) => ajax('/login',{username,password},'POST')
+
+//根据分类ID获取分类
+export const reqCategoryName = (categoryId) => ajax('/manage/category/info',{categoryId})
 //请求分类列表
 export const reqCategory = (parentId) => ajax('/manage/category/list',{parentId})
 //添加分类
