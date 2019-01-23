@@ -24,7 +24,7 @@ export default class productDetail extends React.Component {
       const result1 = results[0]
       const result2 = results[1]
       const cName1 = result1.data.name
-      const cName2 = '---->' + result2.data.name
+      const cName2 = '---->'+result2.data.name
       this.setState({
         cName1,
         cName2
