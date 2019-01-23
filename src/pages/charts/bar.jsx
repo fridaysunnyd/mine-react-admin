@@ -6,10 +6,51 @@ import ReactEcharts from 'echarts-for-react'
 后台管理的柱状图路由组件
  */
 export default class Bar extends Component {
+  state = {
+    sales: [5, 20, 36, 10, 10, 20],
+    inventorys: [15, 30, 46, 20, 20, 40]
+  }
+  getOption = () =>{
+    const {sales,inventorys} = this.state
+    return {
+      title: {
+        text: '商品数量'
+      },
+      tooltip: {},
+      legend: {
+        data:['销量', '库存']
+      },
+      xAxis: {
+        data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+      },
+      yAxis: {},
+      series: [{
+        name: '销量',
+        type: 'bar',
+        data:sales
+      }, {
+        name: '库存',
+        type: 'bar',
+        data: inventorys
+      }]
+    }
+  }
+  update = () =>{
+    let {sales,inventorys} = this.state
+    sales = sales.map( item => item+1 )
+    inventorys = inventorys.map( item => item-1 )
+    this.setState({
+      sales,
+      inventorys
+    })
+  }
   render() {
     return (
       <div>
-        Bar
+        <Card>
+          <Button type='primary' onClick={this.update}>更新</Button>
+        </Card>
+        <ReactEcharts option={this.getOption()} />
       </div>
     )
   }
