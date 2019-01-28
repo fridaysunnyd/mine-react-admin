@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {Row, Col} from 'antd'
+import {connect} from 'react-redux'
 
-import MemoryUtils from '../../utils/MemoryUtils'
 import LeftNav from '../../components/left-nav/left-nav'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
@@ -18,11 +18,11 @@ import './admin.less'
 /*
 后台管理主界面的路由组件
  */
-export default class Admin extends Component {
+class Admin extends Component {
 
   render() {
     // 检查用户是否已经登陆, 如果还没有, 自动跳转到登陆界面
-    const user = MemoryUtils.user
+    const user =  this.props.user
     if(!user || !user._id) {
       // this.props.history.replace('/login')  // 用在事件回调函数中
       return <Redirect to='/login'/>
@@ -53,3 +53,7 @@ export default class Admin extends Component {
     )
   }
 }
+export default connect(
+  state => ({user: state.user}),
+  {}
+)(Admin)

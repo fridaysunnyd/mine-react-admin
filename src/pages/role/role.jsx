@@ -9,12 +9,13 @@ import {
   message,
   Tree
 } from 'antd'
+import {connect} from 'react-redux'
 
 import {reqRoles,reqAddRole,reqUpdateRole} from '../../api'
 import {formateDate} from '../../utils'
 import menuList from '../../config/menuConfig'
-import MemoryUtils from "../../utils/MemoryUtils"
 import storageUtils from "../../utils/storageUtils"
+import {logout} from '../../redux/actions'
 
 const {Item} = Form
 const { TreeNode } = Tree
@@ -22,7 +23,7 @@ const { TreeNode } = Tree
 /*
 后台管理的角色管理路由组件
  */
-export default class Role extends PureComponent {
+ class Role extends PureComponent {
 
   state = {
     roles:[],
@@ -113,9 +114,8 @@ export default class Role extends PureComponent {
     const result = await reqUpdateRole(role)
     if(result.status === 0){
       // 如果更新是当前登陆用户对应的角色, 强制重新登陆
-      if(MemoryUtils.user.role_id === role._id) {
-        storageUtils.removeUser()
-        MemoryUtils.user = {}
+      if(this.props.user.role_id === role._id) {
+        this.props.logout()
         this.props.history.replace('/login')
         message.info('当前用户的权限更新了, 请重新登陆')
       } else {
@@ -187,6 +187,10 @@ export default class Role extends PureComponent {
     )
   }
 }
+export default connect(
+  state => ({user: state.user}),
+  {logout}
+)(Role)
 
 class AddRoleForm extends PureComponent{
   componentWillMount() {

@@ -1,9 +1,10 @@
 import React from 'react'
 import {Row,Col,Modal} from 'antd'
 import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 
+import {logout} from '../../redux/actions'
 import './header.less'
-import memoryUtiles from '../../utils/MemoryUtils'
 import storageUtils from '../../utils/storageUtils'
 import menuList from '../../config/menuConfig'
 import {formateDate} from '../../utils'
@@ -37,8 +38,7 @@ import {reqWeather} from '../../api'
       Modal.confirm({
         content: '确定退出吗?',
         onOk: () => {
-          storageUtils.removeUser()
-          memoryUtiles.user = {}
+          this.props.logout()
           this.props.history.replace('/login')
         }
       })
@@ -66,7 +66,7 @@ import {reqWeather} from '../../api'
     }
 
   render() {
-    const  {username} = memoryUtiles.user
+    const  {username} = this.props.user
     const path = this.props.location.pathname
     const menuName = this.getMenuName(path)
     const {sysTime,dayPictureUrl,temperature} = this.state
@@ -79,7 +79,7 @@ import {reqWeather} from '../../api'
           </Col>
         </Row>
         <Row className='breadcrumb'>
-          <Col span={4} className='breadcrumb-title'>{menuName}</Col>
+          <Col span={4} className='breadcrumb-title'>{this.props.title}</Col>
           <Col span={20} className='weather'>
             <span className='date'>{sysTime}</span>
             <span className='weather-img'>
@@ -92,4 +92,7 @@ import {reqWeather} from '../../api'
     )
   }
 }
-export default withRouter(Header)
+export default connect(
+  state => ({title: state.menuTitle,user:state.user}),
+  {logout}
+)(withRouter(Header))
